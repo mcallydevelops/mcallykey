@@ -5,6 +5,9 @@ import java.util.Optional;
 public class Result {
     private Optional<Item> item;
 
+    public Result() {
+
+    }
     public Result(Optional<Item> item) {
         this.item = item;
     }
