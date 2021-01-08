@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class IntegerDataEngineTest {
 
@@ -23,8 +22,8 @@ class IntegerDataEngineTest {
         IntegerQuery queryObject = new IntegerQuery(500000, Operation.RETRIEVE);
         String query = objectMapper.writeValueAsString(queryObject);
         Result result = dataEngine.query(query);
-        assertTrue(result.getItem().isPresent());
-        assertEquals(500000, result.getItem().get().getId());
+        assertNotNull(result.getItem());
+        assertEquals(500000, result.getItem().getId());
     }
 
     @Test
@@ -32,6 +31,6 @@ class IntegerDataEngineTest {
         IntegerQuery queryObject = new IntegerQuery(-1, Operation.RETRIEVE);
         String query = objectMapper.writeValueAsString(queryObject);
         Result result = dataEngine.query(query);
-        assertTrue(result.getItem().isEmpty());
+        assertNull(result.getItem());
     }
 }

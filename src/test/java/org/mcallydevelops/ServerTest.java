@@ -1,18 +1,13 @@
 package org.mcallydevelops;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
 
 import org.junit.jupiter.api.*;
-
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +30,7 @@ class ServerTest {
     @Test
     void run() throws IOException {
         Result result = mcallyKeyClient.retrieveRecord("localhost", 8080, 20);
-        assertTrue(result.getItem().isPresent());
+        assertNotNull(result.getItem());
     }
 
     @AfterAll

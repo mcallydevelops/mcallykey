@@ -26,8 +26,8 @@ public class NetworkQueryRequestHandler implements Runnable {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             String query = bufferedReader.readLine();
-            Result resultObject = integerDataEngine.query(query);
-            printWriter.println(objectMapper.writeValueAsString(resultObject));
+            Result result = integerDataEngine.query(query);
+            printWriter.println(objectMapper.writeValueAsString(result));
             socket.close();
         } catch (IOException exception) {
             exception.printStackTrace();

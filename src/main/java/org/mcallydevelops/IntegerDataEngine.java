@@ -17,11 +17,12 @@ public class IntegerDataEngine {
 
     public Result query(String query) throws JsonProcessingException {
         IntegerQuery queryObject = objectMapper.readValue(query, IntegerQuery.class);
-        return queryForItem(queryObject);
+        DatabaseResult databaseResult = queryForItem(queryObject);
+        return new Result(databaseResult.getItem().isPresent() ? databaseResult.getItem().get() : null);
     }
 
-    private Result queryForItem(IntegerQuery query) {
+    private DatabaseResult queryForItem(IntegerQuery query) {
         Optional<Item> optionalItem = collection.retrieveElement(query.getKey());
-        return new Result(optionalItem);
+        return new DatabaseResult(optionalItem);
     }
 }

@@ -6,6 +6,7 @@ public class Item {
     private Integer id;
     private Object value;
 
+    public Item() {}
     public Item(Integer id, Object value) {
         this.id = id;
         this.value = value;
