@@ -20,7 +20,7 @@ public class Server implements Runnable {
             ServerSocket serverSocket = new ServerSocket(context.getConfiguration().getPort());
             ExecutorService threadPool = Executors.newFixedThreadPool(context.getConfiguration().getNumberOfThreads());
             while (running) {
-                Runnable task = new NetworkQueryRequestHandler(serverSocket.accept(), context.getIntegerDataEngine());
+                Runnable task = new NetworkQueryRequestHandler(serverSocket.accept(), context.getIntegerDataEngine(), context.getAuthenticationHandler());
                 threadPool.submit(task);
 
             }

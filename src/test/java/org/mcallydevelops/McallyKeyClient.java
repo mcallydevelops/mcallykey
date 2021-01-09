@@ -19,6 +19,8 @@ public class McallyKeyClient {
         Socket socket = new Socket(ip, port);
         BufferedReader clientIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+        printWriter.println(objectMapper.writeValueAsString(new AuthRequest("username", "password")));
+        clientIn.readLine();
         printWriter.println(objectMapper.writeValueAsString(new IntegerQuery(key, Operation.RETRIEVE)));
         String result = clientIn.readLine();
         socket.close();
