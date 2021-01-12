@@ -8,10 +8,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import static org.mcallydevelops.ConnectionPhase.*;
+
 public class NetworkQueryRequestHandler implements Runnable {
 
     private Socket socket;
-    private String connectionPhase;
+    private ConnectionPhase connectionPhase;
     private boolean running;
     private final IntegerDataEngine integerDataEngine;
     private final AuthenticationHandler authenticationHandler;
@@ -23,7 +25,7 @@ public class NetworkQueryRequestHandler implements Runnable {
         this.authenticationHandler = authenticationHandler;
         this.objectMapper = new ObjectMapper();
         this.running = true;
-        this.connectionPhase = "init";
+        this.connectionPhase = INIT;
     }
 
     @Override
@@ -32,22 +34,22 @@ public class NetworkQueryRequestHandler implements Runnable {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             while(running) {
-                String nextPhase = null;
-                if("init".equals(connectionPhase)) {
+                ConnectionPhase nextPhase = null;
+                if(INIT == connectionPhase) {
                     String request = bufferedReader.readLine();
                     AuthResponse authResponse = authenticationHandler.handleAuthentication(request);
                     printWriter.println(objectMapper.writeValueAsString(authResponse));
                     if(!"success".equals(authResponse.getResponse())) {
                         cleanup();
                     } else {
-                        nextPhase = "queryRequest";
+                        nextPhase = QUERY_REQUEST;
                     }
-                } else if("queryRequest".equals(connectionPhase)){
+                } else if(QUERY_REQUEST == connectionPhase){
                     String request = bufferedReader.readLine();
                     Result result = integerDataEngine.query(request);
                     String response = objectMapper.writeValueAsString(result);
                     printWriter.println(response);
-                    nextPhase = "close";
+                    nextPhase = CLOSE;
                 } else if("close".equals(connectionPhase)) {
                     cleanup();
                 }
